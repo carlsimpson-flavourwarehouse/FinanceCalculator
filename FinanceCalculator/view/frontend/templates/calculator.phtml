@@ -1,0 +1,206 @@
+<h2>Finance Calculation</h2>
+
+<div class="container calculator">
+    <div class="inner-wrapper">
+        <div class="q1 question">
+            <p class="title">1: Enter Your Finance Amount</p>
+            <p>£ <input id="amount"></input></p>
+        </div>
+
+        <div class="q2 question">
+            <p class="title">2: Choose Your Finance product</p>
+            <div class="selection-wrapper" id="btns">
+                <button class="12mnth" id="12m">12 Months</button>
+                <button class="18mnth" id="18m">18 Months</button>
+                <button class="24mnth" id="24m">24 Months</button>
+                <button class="36mnth" id="36m">36 Months</button>
+            </div>
+        </div>
+
+        <p class="title">Summary</p>
+        <div class="summary">
+            <div class="summary-inner-wrapper">
+                <p class="title">Monthly repayment amount : £ <span id="repayment"></span></p>
+                <p class="title">Deposit You Pay Today : £ <span id="deposit"></span></p>
+                <p class="title">Loan Period : <span id="loan"></span> Months</p>
+                <p class="title">Rate of interest : <span id="interest"></span> %</p>
+                <p class="title">Total amount payable : £ <span id="total"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Get the button, and when the user clicks on it, execute function
+    document.getElementById("12m").onclick = function () {
+        calculate12months();
+    };
+    document.getElementById("18m").onclick = function () {
+        calculate18months();
+    };
+    document.getElementById("24m").onclick = function () {
+        calculate24months();
+    };
+    document.getElementById("36m").onclick = function () {
+        calculate36months();
+    };
+
+    // api url
+    const api_url = "https://6159caa2601e6f0017e5a2f0.mockapi.io/api/v1/finance";
+
+    let months12;
+    let months18;
+    let months24;
+    let months36;
+    let finance;
+
+    async function getapi(url) {
+        const response = await fetch(url);
+        let data = await response.json();
+
+        finance = document.getElementById("amount").value;
+
+        months12 = data[0].calculatorOptions[0].termInMonths;
+        months18 = data[0].calculatorOptions[1].termInMonths;
+        months24 = data[0].calculatorOptions[2].termInMonths;
+        months36 = data[0].calculatorOptions[3].termInMonths;
+
+        percentage12 = data[0].calculatorOptions[0].apr;
+        percentage18 = data[0].calculatorOptions[1].apr;
+        percentage24 = data[0].calculatorOptions[2].apr;
+        percentage36 = data[0].calculatorOptions[3].apr;
+
+        testPercent = 2;
+    }
+
+    let repayment = 0;
+    let deposit = 0;
+    let total;
+    let termOfLoan;
+    let api;
+    let repaymentAccount;
+    let result = 2;
+
+    getapi(api_url);
+
+    function calculate12months() {
+        apr = testPercent;
+        termOfLoan = months12;
+        finance = document.getElementById("amount").value;
+
+        if (apr < 1) {
+            total = finance;
+            updatedAmount = finance;
+        } else {
+            total = finance * apr;
+            updatedAmount = finance * apr;
+        }
+
+        repaymentAmount = finance;
+        amount = updatedAmount / 12;
+
+        document.getElementById("repayment").innerHTML = amount.toFixed(2);
+        document.getElementById("deposit").innerHTML = deposit;
+        document.getElementById("loan").innerHTML = termOfLoan;
+        document.getElementById("interest").innerHTML = apr;
+        document.getElementById("total").innerHTML = total;
+
+        additionalChecks()
+    }
+
+    function calculate18months() {
+        apr = percentage18;
+        termOfLoan = months18;
+        finance = document.getElementById("amount").value;
+
+        if (apr < 1) {
+            total = finance;
+            updatedAmount = finance;
+        } else {
+            total = finance * apr;
+            updatedAmount = finance * apr;
+        }
+
+        repaymentAmount = finance;
+        amount = updatedAmount / 18;
+
+        document.getElementById("repayment").innerHTML = amount.toFixed(2);
+        document.getElementById("deposit").innerHTML = deposit;
+        document.getElementById("loan").innerHTML = termOfLoan;
+        document.getElementById("interest").innerHTML = apr;
+        document.getElementById("total").innerHTML = total;
+
+        additionalChecks()
+    }
+
+    function calculate24months() {
+        apr = percentage24;
+        termOfLoan = months24;
+        finance = document.getElementById("amount").value;
+
+        if (apr < 1) {
+            total = finance;
+            updatedAmount = finance;
+        } else {
+            total = finance * apr;
+            updatedAmount = finance * apr;
+        }
+
+        repaymentAmount = finance;
+        amount = updatedAmount / 24;
+
+        document.getElementById("repayment").innerHTML = amount.toFixed(2);
+        document.getElementById("deposit").innerHTML = deposit;
+        document.getElementById("loan").innerHTML = termOfLoan;
+        document.getElementById("interest").innerHTML = apr;
+        document.getElementById("total").innerHTML = total;
+
+        additionalChecks()
+    }
+
+    function calculate36months() {
+        apr = percentage36;
+        termOfLoan = months36;
+        finance = document.getElementById("amount").value;
+
+        if (apr < 1) {
+            total = finance;
+            updatedAmount = finance;
+        } else {
+            total = finance * apr;
+            updatedAmount = finance * apr;
+        }
+
+        repaymentAmount = finance;
+        amount = updatedAmount / 36;
+
+        document.getElementById("repayment").innerHTML = amount.toFixed(2);
+        document.getElementById("deposit").innerHTML = deposit;
+        document.getElementById("loan").innerHTML = termOfLoan;
+        document.getElementById("interest").innerHTML = apr;
+        document.getElementById("total").innerHTML = total;
+
+        additionalChecks()
+    }
+
+    function additionalChecks(){
+        finance = document.getElementById("amount").value;
+
+        if(finance < 250){
+            document.getElementById("btns").style.display = "none";
+        }
+
+        if(finance == 270){
+            document.getElementById("18m").style.display = "none";
+            document.getElementById("24m").style.display = "none";
+            document.getElementById("36m").style.display = "none";
+        }
+
+        if(finance == 999){
+            document.getElementById("24m").style.display = "none";
+            document.getElementById("36m").style.display = "none";
+        }
+    }
+
+</script>
